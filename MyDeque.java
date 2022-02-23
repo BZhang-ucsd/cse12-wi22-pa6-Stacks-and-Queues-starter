@@ -1,9 +1,9 @@
 public class MyDeque<E> implements DequeInterface<E> {
 
     Object[] data;
-    int size = 0;
-    int rear = 0;
-    int front = 0;
+    int size;
+    int rear;
+    int front;
     static final int DEFAULT_SIZE = 10;
     static final int TWO = 2;
 
@@ -16,6 +16,9 @@ public class MyDeque<E> implements DequeInterface<E> {
             throw new IllegalArgumentException();
         }
         this.data = new Object[initialCapacity];
+        this.size = 0;
+        this.rear = 0;
+        this.front = 0;
     }
 
     /**
@@ -53,24 +56,28 @@ public class MyDeque<E> implements DequeInterface<E> {
         }
         if(size == data.length){
             expandCapacity();
-            data[data.length-1] = element;
-            front = data.length-1;
-        }else if(data == null){
-            data[data.length-1]=element;
+            this.data[data.length-1] = element;
+            this.front = data.length-1;
+        }
+        if(this.size == 0){
+            this.data[data.length-1] = element;
+            this.front = data.length-1;
+            this.rear = data.length-1;
         }else{
-            for(int i = 0; i < data.length-1;i++){
+            for(int i = 0; i < this.data.length-1;i++){
                 if(data[i] == null && data[i+1]!=null){
-                    data[i]= element;
-                    front = i;
+                    this.data[i]= element;
+                    this.front = i;
                     break;
                 }
                 if(i == data.length-TWO){
-                    data[i+1]= element;
+                    this.data[i+1]= element;
+                    this.front = data.length-1;
                 }
             }
         }
 
-        size++;
+        this.size++;
     }
 
     /**
@@ -83,23 +90,26 @@ public class MyDeque<E> implements DequeInterface<E> {
         }
         if(size == data.length){
             expandCapacity();
-            data[size] = element;
-            rear = size;
-        }else if(data == null){
-            data[0]=element;
+            this.data[size] = element;
+            this.rear = size;
+        }else if(this.size == 0){
+            this.data[0]=element;
+            this.front = 0;
+            this.rear = 0;
         }else{
-            for(int i = data.length-1 ; i > 0;i--){
-                if(data[i] == null && data[i-1]!=null){
-                    data[i]= element;
-                    rear = i;
+            for(int i = this.data.length-1 ; i > 0;i--){
+                if(this.data[i] == null && this.data[i-1]!=null){
+                    this.data[i]= element;
+                    this.rear = i;
                     break;
                 }
                 if(i == 1){
-                    data[0]=element;
+                    this.data[0]=element;
+                    this.rear = 0;
                 }
             }
         }
-        size++;
+        this.size++;
     }
 
     /**
@@ -109,13 +119,13 @@ public class MyDeque<E> implements DequeInterface<E> {
      */
     @Override
     public E removeFirst(){
-        if(data == null){
+        if(this.size == 0){
             return null;
         }else{
-            E Removed = (E) data[front];
-            data[front] = null;
-            size--;
-            front++;
+            E Removed = (E) this.data[front];
+            this.data[front] = null;
+            this.size--;
+            this.front++;
             return Removed;
         }
     }
@@ -127,13 +137,13 @@ public class MyDeque<E> implements DequeInterface<E> {
      */
     @Override
     public E removeLast(){
-        if(data == null){
+        if(this.size == 0){
             return null;
         }else{
             E Removed = (E) data[rear];
-            data[rear] = null;
-            size--;
-            rear--;
+            this.data[rear] = null;
+            this.size--;
+            this.rear--;
             return Removed;
         }
     }
@@ -145,7 +155,11 @@ public class MyDeque<E> implements DequeInterface<E> {
      */
     @Override
     public E peekFirst(){
-        return (E)data[front];
+        if(this.size == 0){
+            return null;
+        }else{
+            return (E)data[front];
+        }
     }
 
     /**
@@ -155,7 +169,11 @@ public class MyDeque<E> implements DequeInterface<E> {
      */
     @Override
     public E peekLast(){
-        return (E)data[rear];
+        if(this.size == 0){
+            return null;
+        }else{
+            return (E)data[rear];
+        }
     }
 
 

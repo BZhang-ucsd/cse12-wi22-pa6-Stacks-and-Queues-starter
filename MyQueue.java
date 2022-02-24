@@ -1,12 +1,13 @@
 /**
- * TODO: Add your file header
- * Name:
- * Email:
- * Sources used: Put "None" if you did not have any external help
+ * File: MyQueue.java
+ * Name: Botao Zhang
+ * ID: A17143584
+ * Email: boz002@ucsd.edu
+ * Sources used: Lecture recording and slides, Zybooks.
  * 
- * This file contains a MyQueue class, which is an implementation for the Queue
- * ADT based on MyDeque. Elements can be added/removed from the queue in a FIFO
- * ordering.
+ * Descriptions: This is the Queue ADt implements from MyQeque. Class includes
+ * overrided method empty, enqueue, dequeue, peek and size which can use to
+ * access the elements in the queue.
  */
 
 /**

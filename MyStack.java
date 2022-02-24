@@ -1,12 +1,13 @@
 /**
- * TODO: Add your file header
- * Name:
- * Email:
- * Sources used: Put "None" if you did not have any external help
+ * File: MyStack.java
+ * Name: Botao Zhang
+ * ID: A17143584
+ * Email: boz002@ucsd.edu
+ * Sources used: Lecture recording and slides, Zybooks.
  * 
- * This file contains a MyStack class, which is an implementation for the Stack
- * ADT based on MyDeque. Elements can be added/removed from the queue in a LIFO
- * ordering.
+ * Descriptions: This file contains a MyStack class, which is an implementation 
+ * for the Stack ADT based on MyDeque. Elements can be added/removed from the 
+ * queue in a LIFO ordering.
  */
 
 /**

@@ -1,3 +1,18 @@
+/**
+ * File: MyDeque.java
+ * Name: Botao Zhang
+ * ID: A17143584
+ * Email: boz002@ucsd.edu
+ * Sources used: Lecture recording and slides, Zybooks.
+ * 
+ * Descriptions: This file contains a MyDeque class implements DequeInterface,
+ * elements can be added/removed from the deque. It also contains method
+ * expandCapacity,size and peek(first/last) to access the elements.
+ */
+
+ /**
+ * This class MyDeque implements DequeInterface and it is a generic class
+ */
 public class MyDeque<E> implements DequeInterface<E> {
 
     Object[] data;
@@ -15,6 +30,7 @@ public class MyDeque<E> implements DequeInterface<E> {
         if(initialCapacity < 0){
             throw new IllegalArgumentException();
         }
+        //initialize instance variables
         this.data = new Object[initialCapacity];
         this.size = 0;
         this.rear = 0;
@@ -35,14 +51,24 @@ public class MyDeque<E> implements DequeInterface<E> {
      */
     @Override
     public void expandCapacity(){
+        //set to size of 10 if capacity is zero
         if(data.length == 0){
             this.data = new Object[DEFAULT_SIZE];
         }else{
+            //double the capacity
             Object[] temp = new Object[data.length*TWO];
+            int count = 0;
             for(int i = 0; i < data.length;i++){
-                temp[i] = data[i];
+                if(front+i >= data.length){
+                    temp[i] = data[count];
+                    count++;
+                }else{
+                    temp[i] = data[front+i];
+                }  
             }
-            data = temp;
+            this.data = temp;
+            this.front = 0;
+            this.rear = this.size - 1;
         }
     }
 
@@ -55,28 +81,25 @@ public class MyDeque<E> implements DequeInterface<E> {
             throw new NullPointerException();
         }
         if(size == data.length){
+            //expand capacity if full
             expandCapacity();
             this.data[data.length-1] = element;
             this.front = data.length-1;
         }
         if(this.size == 0){
-            this.data[data.length-1] = element;
-            this.front = data.length-1;
-            this.rear = data.length-1;
+            this.data[front] = element;
         }else{
-            for(int i = 0; i < this.data.length-1;i++){
-                if(data[i] == null && data[i+1]!=null){
-                    this.data[i]= element;
-                    this.front = i;
-                    break;
-                }
-                if(i == data.length-TWO){
-                    this.data[i+1]= element;
-                    this.front = data.length-1;
-                }
+            if(front == 0){
+                //if front is at 0, wrap around the deque at the end
+                this.data[data.length-1] = element;
+                this.front = data.length-1;
+            }else{
+                //update front and add element to front
+                this.front--;
+                data[front] = element;
             }
         }
-
+        //increment size
         this.size++;
     }
 
@@ -89,26 +112,24 @@ public class MyDeque<E> implements DequeInterface<E> {
             throw new NullPointerException();
         }
         if(size == data.length){
+            //expand capacity if full
             expandCapacity();
             this.data[size] = element;
             this.rear = size;
         }else if(this.size == 0){
-            this.data[0]=element;
-            this.front = 0;
-            this.rear = 0;
+            this.data[rear]=element;
         }else{
-            for(int i = this.data.length-1 ; i > 0;i--){
-                if(this.data[i] == null && this.data[i-1]!=null){
-                    this.data[i]= element;
-                    this.rear = i;
-                    break;
-                }
-                if(i == 1){
-                    this.data[0]=element;
-                    this.rear = 0;
-                }
+            if(rear == data.length-1){
+                 //if rear is at the end, wrap around the deque at the front
+                this.data[0] = element;
+                this.rear = 0;
+            }else{
+                //update rear and add element to rear
+                this.rear++;
+                data[rear] = element;
             }
         }
+        //increment size
         this.size++;
     }
 
@@ -120,10 +141,20 @@ public class MyDeque<E> implements DequeInterface<E> {
     @Override
     public E removeFirst(){
         if(this.size == 0){
+            //return null if empty
             return null;
+        }else if(this.size==1){
+            //dont update rear when remove last element
+            E Removed = (E) data[front];
+            this.data[front] = null;
+            //update size
+            this.size--;
+            return Removed;
         }else{
+            //remove and return data at front
             E Removed = (E) this.data[front];
             this.data[front] = null;
+            //update instance variables
             this.size--;
             this.front++;
             return Removed;
@@ -138,10 +169,20 @@ public class MyDeque<E> implements DequeInterface<E> {
     @Override
     public E removeLast(){
         if(this.size == 0){
+            //return null if empty
             return null;
-        }else{
+        }else if(this.size==1){
+            //dont update rear when remove last element
             E Removed = (E) data[rear];
             this.data[rear] = null;
+            //update size
+            this.size--;
+            return Removed;
+        }else{
+            //remove and return data at rear
+            E Removed = (E) data[rear];
+            this.data[rear] = null;
+            //update instance variables
             this.size--;
             this.rear--;
             return Removed;
